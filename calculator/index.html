@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Digital Carbon Calculator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+<div class="bg-white p-8 rounded-xl shadow-xl w-[500px]">
+
+<h1 class="text-2xl font-bold mb-6 text-center">
+Digital Carbon Footprint Calculator
+</h1>
+
+<div class="space-y-4">
+
+<div>
+<label>Coding Time (minutes)</label>
+<input id="coding" type="number" class="w-full border p-2 rounded">
+</div>
+
+<div>
+<label>Instagram / Reels Time (minutes)</label>
+<input id="social" type="number" class="w-full border p-2 rounded">
+</div>
+
+<div>
+<label>Gaming Time (minutes)</label>
+<input id="gaming" type="number" class="w-full border p-2 rounded">
+</div>
+
+<div>
+<label>ML Training Time (minutes)</label>
+<input id="ml" type="number" class="w-full border p-2 rounded">
+</div>
+
+<button onclick="calculate()" class="bg-blue-500 text-white w-full p-3 rounded hover:bg-blue-600">
+Calculate
+</button>
+
+<div id="result" class="mt-6 text-lg font-semibold text-center"></div>
+
+</div>
+</div>
+
+<script>
+
+function calculate(){
+
+let coding = Number(document.getElementById("coding").value || 0)
+let social = Number(document.getElementById("social").value || 0)
+let gaming = Number(document.getElementById("gaming").value || 0)
+let ml = Number(document.getElementById("ml").value || 0)
+
+let codingPower = 60
+let socialPower = 30
+let gamingPower = 150
+let mlPower = 200
+
+let codingEnergy = (coding/60) * codingPower
+let socialEnergy = (social/60) * socialPower
+let gamingEnergy = (gaming/60) * gamingPower
+let mlEnergy = (ml/60) * mlPower
+
+let totalWh = codingEnergy + socialEnergy + gamingEnergy + mlEnergy
+
+let energyKWh = totalWh / 1000
+
+let carbonIntensity = 700
+
+let co2 = energyKWh * carbonIntensity
+
+document.getElementById("result").innerHTML =
+
+`Energy Used: ${energyKWh.toFixed(3)} kWh <br>
+CO₂ Emitted: ${co2.toFixed(2)} g`
+
+}
+
+</script>
+
+</body>
+</html>

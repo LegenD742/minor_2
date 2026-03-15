@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Code Carbon Comparator</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+textarea{
+font-family: monospace;
+}
+
+.resultCard{
+animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform: translateY(10px);}
+to{opacity:1; transform: translateY(0);}
+}
+</style>
+
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 min-h-screen text-white p-10">
+
+<h1 class="text-4xl font-bold text-center mb-12 tracking-wide">
+🌍 Code Carbon Emission
+</h1>
+
+<div class="grid grid-cols-1 gap-10 max-w-4xl mx-auto">
+
+<div class="bg-slate-800 p-6 rounded-xl shadow-2xl hover:scale-[1.02] transition duration-300">
+
+<h2 class="text-xl font-semibold mb-3 text-blue-400">
+Your Code 
+</h2>
+
+<select id="lang1"
+class="bg-slate-700 border border-slate-600 p-2 rounded w-full mb-3 text-white">
+<option value="python">Python</option>
+<option value="cpp">C++</option>
+</select>
+
+<textarea
+id="code1"
+placeholder="Paste your code here..."
+class="w-full h-60 bg-slate-900 border border-slate-600 p-3 rounded text-green-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+</textarea>
+
+<button onclick="runCode(1)"
+class="mt-4 w-full bg-blue-500 hover:bg-blue-600 active:scale-95 transition duration-200 p-3 rounded font-semibold shadow-lg">
+Run Program
+</button>
+
+<div id="result1"
+class="resultCard mt-6 bg-slate-900 p-4 rounded-lg border border-slate-700 hidden">
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+async function runCode(num){
+
+let code = document.getElementById("code"+num).value
+let lang = document.getElementById("lang"+num).value
+
+const res = await fetch("/run",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(
+    {code,
+    lang,
+activity:"coding"}
+)
+})
+
+const data = await res.json()
+
+const resultDiv = document.getElementById("result"+num)
+
+resultDiv.classList.remove("hidden")
+
+resultDiv.innerHTML = `
+<div class="space-y-1">
+<div>⏱ Execution Time: <span class="text-yellow-400">${data.executionTime.toFixed(3)} s</span></div>
+<div>🖥 CPU Usage: <span class="text-blue-400">${data.cpuUsage}%</span></div>
+<div>⚡ Energy Used: <span class="text-purple-400">${data.energy.toFixed(6)} kWh</span></div>
+<div>🌱 CO₂ Emission: <span class="text-emerald-400 font-semibold">${data.co2.toFixed(4)} g</span></div>
+</div>
+`
+
+}
+
+</script>
+
+</body>
+</html>
