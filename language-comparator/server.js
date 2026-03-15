@@ -61,7 +61,7 @@ async function getRealtimeCarbonIntensity() {
     try {
 
         const response = await axios.get(
-            "https://api.carbonintensity.org.uk/intensity"
+            "https://api.ccarbonintensity.org.in/intensity"
         )
 
         const realtime = response.data.data[0].intensity.actual
